@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drag and Drop</title>
+</head>
+<body>
+    <div id="box" draggable="true"
+         style="width:100px;height:100px;background:red;">
+    </div>
+
+    <div id="drop"
+         style="width:200px;height:200px;background:white;
+                margin:10px;border:1px solid black;">
+    </div>
+
+    <script>
+        const box = document.getElementById("box");
+        const drop = document.getElementById("drop");
+        box.addEventListener("dragstart", function(e){
+            e.dataTransfer.setData("text", "box");
+        });
+
+        drop.addEventListener("dragover", function(e){
+            e.preventDefault();  
+        });
+
+        drop.addEventListener("drop", function(e){
+            e.preventDefault();
+            let data = e.dataTransfer.getData("text");
+            drop.appendChild(document.getElementById(data));
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Student Form</title>
+  </head>
+  <body>
+    <label>NAME:</label>
+    <input id="name" type="text" />
+    <br />
+
+    <label>ROLL NO:</label>
+    <input id="roll" type="number" />
+    <br />
+
+    <label>MARKS:</label>
+    <input id="mark" type="number" />
+    <br />
+
+    <label>MAIL:</label>
+    <input id="mail" type="email" />
+    <br />
+    <p id="op"></p>
+
+    <button id="btn">SUBMIT</button>
+
+    <script>
+      const mailSet = new Set(); 
+      const students = [];
+      const gradeMap = new Map(); 
+
+      document.getElementById("btn").onclick = function () {
+        try {
+          var name = document.getElementById("name").value;
+          var roll = document.getElementById("roll").value;
+          var mark = Number(document.getElementById("mark").value);
+          var mail = document.getElementById("mail").value;
+
+          const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+          if (!emailPattern.test(mail)) {
+            throw new Error("Invalid Email Format!");
+          }
+
+          if (mark < 0 || mark > 100) {
+            throw new Error("Marks must be between 0 to 100");
+          }
+
+          if (mailSet.has(mail)) {
+            throw new Error("Email already exists");
+          }
+
+          function calculateGrade(m) {
+            if (m >= 90) return "A";
+            if (m >= 75) return "B";
+            if (m >= 60) return "C";
+            return "D";
+          }
+
+          const student = {
+            name: name,
+            roll: roll,
+            mark: mark,
+            mail: mail,
+            date: new Date(),
+            getGrade: function () {
+              return calculateGrade(this.mark);
+            },
+          };
+
+          students.push(student);
+          mailSet.add(mail);
+          gradeMap.set(mail, student.getGrade());
+          console.log(students);
+          clearFields();
+        } catch (error) {
+          alert(error.message);
+        }
+      };
+
+      function clearFields() {
+        document.getElementById("name").value = "";
+        document.getElementById("roll").value = "";
+        document.getElementById("mark").value = "";
+        document.getElementById("mail").value = "";
+      }
+    </script>
+  </body>
+</html>
